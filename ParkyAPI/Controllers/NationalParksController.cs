@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -19,7 +20,7 @@ namespace ParkyAPI.Controllers
     [ApiController]
     //[ApiExplorerSettings(GroupName = "ParkyOpenAPISpecNP")]
     [ProducesResponseType(StatusCodes.Status400BadRequest)] //apply to all method
-    public class NationalParksController : Controller
+    public class NationalParksController : ControllerBase
     {
         private readonly INationalParkRepository _npRepo;
         private readonly IMapper _mapper;
@@ -58,6 +59,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(200, Type = typeof(NationalParkDto))]
         [ProducesResponseType(404)]
         [ProducesDefaultResponseType]
+        [Authorize]
         public IActionResult GetNationalPark(int nationalParkId)
         {
             var obj = _npRepo.GetNationalPark(nationalParkId);
