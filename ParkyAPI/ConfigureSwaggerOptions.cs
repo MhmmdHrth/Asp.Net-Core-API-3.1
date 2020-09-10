@@ -6,22 +6,20 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace ParkyAPI
 {
     public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
         //api versioning
-        readonly IApiVersionDescriptionProvider provider;
+        private readonly IApiVersionDescriptionProvider provider;
 
         public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
 
         public void Configure(SwaggerGenOptions options)
         {
-            foreach(var desc in provider.ApiVersionDescriptions)
+            foreach (var desc in provider.ApiVersionDescriptions)
             {
                 options.SwaggerDoc(
                         desc.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo()
@@ -33,10 +31,10 @@ namespace ParkyAPI
 
             //-----------------------------------------------------------------------Add Bearer to Swagger UI-----------------------------------------------------------------------------//
 
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() 
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {
-                Description = "JWT Authorization header using the Bearer Scheme. \r\n\r\n" + 
-                    "enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" + 
+                Description = "JWT Authorization header using the Bearer Scheme. \r\n\r\n" +
+                    "enter 'Bearer' [space] and then your token in the text input below.\r\n\r\n" +
                     "Example: \"Bearer 12345abcdef\"",
                 Name = "Authorization",
                 In = ParameterLocation.Header,

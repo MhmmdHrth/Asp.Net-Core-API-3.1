@@ -49,7 +49,6 @@ function Delete(url) {
                         if (data.success) {
                             toastr.success(data.message);
                             dataTable.ajax.reload();
-
                         }
                         else {
                             toastr.error(data.message)

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ParkyAPI.Models;
 using ParkyAPI.Models.Dtos;
 using ParkyAPI.Repository.IRepository;
+using System.Collections.Generic;
 
 namespace ParkyAPI.Controllers
 {
@@ -36,13 +30,13 @@ namespace ParkyAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200,Type =typeof(List<NationalParkDto>))]
+        [ProducesResponseType(200, Type = typeof(List<NationalParkDto>))]
         public IActionResult GetNationalParks()
         {
             var objList = _npRepo.GetNationalParks();
             var objDTO = new List<NationalParkDto>();
 
-            foreach(var obj in objList)
+            foreach (var obj in objList)
             {
                 objDTO.Add(_mapper.Map<NationalParkDto>(obj));
             }
@@ -63,7 +57,7 @@ namespace ParkyAPI.Controllers
         public IActionResult GetNationalPark(int nationalParkId)
         {
             var obj = _npRepo.GetNationalPark(nationalParkId);
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -78,7 +72,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(500)]
         public IActionResult CreateNationalPark(NationalParkDto nationalParkDto)
         {
-            if(nationalParkDto == null)
+            if (nationalParkDto == null)
             {
                 return BadRequest(ModelState);
             }
@@ -100,11 +94,12 @@ namespace ParkyAPI.Controllers
             }
 
             //success
-            return CreatedAtRoute("GetNationalPark",new {
+            return CreatedAtRoute("GetNationalPark", new
+            {
                 version = HttpContext.GetRequestedApiVersion().ToString(),
-                nationalParkId = nationalParkObj.Id}, 
+                nationalParkId = nationalParkObj.Id
+            },
                 nationalParkObj);
-
         }
 
         [HttpPatch("{nationalParkId:int}", Name = "UpdateNationalPark")]
@@ -113,7 +108,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(500)]
         public IActionResult UpdateNationalPark(int nationalParkId, NationalParkDto nationalParkDto)
         {
-            if(nationalParkDto == null || nationalParkId != nationalParkDto.Id)
+            if (nationalParkDto == null || nationalParkId != nationalParkDto.Id)
             {
                 return BadRequest(ModelState);
             }
@@ -124,13 +119,12 @@ namespace ParkyAPI.Controllers
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {nationalParkObj.Name}");
                 return StatusCode(500, ModelState);
-
             }
 
             return NoContent();
         }
 
-        [HttpDelete("{nationalParkId:int}",Name = "DeleteNationalPark")]
+        [HttpDelete("{nationalParkId:int}", Name = "DeleteNationalPark")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(409)] //conflict

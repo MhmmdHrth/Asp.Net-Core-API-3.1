@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ParkyAPI.Models;
 using ParkyAPI.Models.Dtos;
 using ParkyAPI.Repository.IRepository;
+using System.Collections.Generic;
 
 namespace ParkyAPI.Controllers
 {
@@ -36,13 +30,13 @@ namespace ParkyAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(200,Type =typeof(List<TrailDto>))]
+        [ProducesResponseType(200, Type = typeof(List<TrailDto>))]
         public IActionResult GetTrails()
         {
             var objList = _trailRepo.GetTrails();
             var objDTO = new List<TrailDto>();
 
-            foreach(var obj in objList)
+            foreach (var obj in objList)
             {
                 objDTO.Add(_mapper.Map<TrailDto>(obj));
             }
@@ -63,7 +57,7 @@ namespace ParkyAPI.Controllers
         public IActionResult GetTrail(int trailId)
         {
             var obj = _trailRepo.GetTrail(trailId);
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -85,7 +79,7 @@ namespace ParkyAPI.Controllers
             }
 
             var objDTO = new List<TrailDto>();
-            foreach(var obj in objList)
+            foreach (var obj in objList)
             {
                 objDTO.Add(_mapper.Map<TrailDto>(obj));
             }
@@ -99,7 +93,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(500)]
         public IActionResult CreateTrail(TrailCreateDto trailDto)
         {
-            if(trailDto == null)
+            if (trailDto == null)
             {
                 return BadRequest(ModelState);
             }
@@ -121,8 +115,7 @@ namespace ParkyAPI.Controllers
             }
 
             //success
-            return CreatedAtRoute("GetTrail",new { trailId = trailObj.Id}, trailObj);
-
+            return CreatedAtRoute("GetTrail", new { trailId = trailObj.Id }, trailObj);
         }
 
         [HttpPatch("{trailId:int}", Name = "UpdateTrail")]
@@ -131,7 +124,7 @@ namespace ParkyAPI.Controllers
         [ProducesResponseType(500)]
         public IActionResult UpdateTrail(int trailId, TrailUpdateDto trailDto)
         {
-            if(trailDto == null || trailId != trailDto.Id)
+            if (trailDto == null || trailId != trailDto.Id)
             {
                 return BadRequest(ModelState);
             }
@@ -142,13 +135,12 @@ namespace ParkyAPI.Controllers
             {
                 ModelState.AddModelError("", $"Something went wrong when updating the record {trailObj.Name}");
                 return StatusCode(500, ModelState);
-
             }
 
             return NoContent();
         }
 
-        [HttpDelete("{trailId:int}",Name = "DeleteTrail")]
+        [HttpDelete("{trailId:int}", Name = "DeleteTrail")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         [ProducesResponseType(409)] //conflict

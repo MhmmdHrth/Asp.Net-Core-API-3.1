@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ParkyWeb.Models;
 using ParkyWeb.Repository.IRepository;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ParkyWeb.Controllers
 {
-
     [Authorize]
     public class NationalParksController : Controller
     {
@@ -30,15 +26,14 @@ namespace ParkyWeb.Controllers
         public async Task<IActionResult> GetAllNationalPark()
         {
             return Json(new { data = await _npRepo.GetAllAsync(SD.NationalParkAPIPath, HttpContext.Session.GetString("JWToken")) });
-
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Upsert(int? id)
         {
             NationalPark obj = new NationalPark();
 
-            if(id == null)
+            if (id == null)
             {
                 //this will be true for create
                 return View(obj);
@@ -46,7 +41,7 @@ namespace ParkyWeb.Controllers
 
             //flow will come for update
             obj = await _npRepo.GetAsync(SD.NationalParkAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
-            if(obj == null)
+            if (obj == null)
             {
                 return NotFound();
             }
@@ -56,10 +51,9 @@ namespace ParkyWeb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult>  Upsert(NationalPark obj)
+        public async Task<IActionResult> Upsert(NationalPark obj)
         {
-
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 //get files uploaded
                 var files = HttpContext.Request.Form.Files;
@@ -99,9 +93,7 @@ namespace ParkyWeb.Controllers
             {
                 return View(obj);
             }
-
         }
-
 
         [HttpDelete]
         [Authorize(Roles = "Admin")]

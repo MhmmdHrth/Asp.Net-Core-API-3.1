@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ParkyWeb.Repository.IRepository;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ParkyWeb.Repository
@@ -24,7 +20,7 @@ namespace ParkyWeb.Repository
         public async Task<bool> CreateAsync(string url, T objToCreate, string token = "")
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
-            if(objToCreate != null)
+            if (objToCreate != null)
             {
                 request.Content = new StringContent
                                 (JsonConvert.SerializeObject(objToCreate), Encoding.UTF8, "application/json");
@@ -36,14 +32,14 @@ namespace ParkyWeb.Repository
 
             var client = _clientFactiory.CreateClient();
 
-            if(token != null && token.Length != 0)
+            if (token != null && token.Length != 0)
             {
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
             HttpResponseMessage response = await client.SendAsync(request);
 
-            if(response.StatusCode == System.Net.HttpStatusCode.Created)
+            if (response.StatusCode == System.Net.HttpStatusCode.Created)
             {
                 return true;
             }
@@ -51,7 +47,6 @@ namespace ParkyWeb.Repository
             {
                 return false;
             }
-
         }
 
         public async Task<bool> DeleteAsync(string url, int Id, string token = "")
@@ -61,7 +56,7 @@ namespace ParkyWeb.Repository
 
             HttpResponseMessage response = await client.SendAsync(request);
 
-            if(response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 return true;
             }
@@ -69,7 +64,6 @@ namespace ParkyWeb.Repository
             {
                 return false;
             }
-            
         }
 
         public async Task<IEnumerable<T>> GetAllAsync(string url, string token = "")
@@ -83,7 +77,7 @@ namespace ParkyWeb.Repository
             }
 
             HttpResponseMessage response = await client.SendAsync(request);
-            if(response.StatusCode == System.Net.HttpStatusCode.OK)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<IEnumerable<T>>(jsonString);

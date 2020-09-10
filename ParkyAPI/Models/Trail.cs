@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ParkyAPI.Models
 {
@@ -21,7 +18,8 @@ namespace ParkyAPI.Models
         [Required]
         public double Elevation { get; set; }
 
-        public enum DifficultyType { Easy ,Moderate ,Difficult ,Expert }
+        public enum DifficultyType { Easy, Moderate, Difficult, Expert }
+
         public DifficultyType Difficulty { get; set; }
 
         [Required]

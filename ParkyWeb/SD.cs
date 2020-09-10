@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-
-namespace ParkyWeb
+﻿namespace ParkyWeb
 {
     public static class SD
     {

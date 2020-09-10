@@ -1,9 +1,8 @@
 ﻿@model ParkyWeb.Models.NationalPark
 
-@{ 
+@{
     var title = "Create National Park";
 }
-
 
 <form method="post" asp-action="Upsert" enctype="multipart/form-data">
 
@@ -49,7 +48,7 @@
                     <label asp-for="Established"></label>
                 </div>
                 <div class="col-8">
-                    @{ 
+                    @{
                         var dateEst = "";
                         if(Model.Id != 0)
                         {
@@ -81,7 +80,7 @@
     </div>
 </form>
 
-@section scripts{ 
+@section scripts{
     <script>
         $(function () {
             $('#datepicker').datepicker({

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using ParkyWeb.Models;
 using ParkyWeb.Models.ViewModel;
 using ParkyWeb.Repository.IRepository;
+using System.Diagnostics;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ParkyWeb.Controllers
 {
@@ -37,7 +34,7 @@ namespace ParkyWeb.Controllers
         {
             IndexVM listOfParksAndTrails = new IndexVM()
             {
-                NationalParkList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath,HttpContext.Session.GetString("JWToken")),
+                NationalParkList = await _npRepo.GetAllAsync(SD.NationalParkAPIPath, HttpContext.Session.GetString("JWToken")),
                 TrailList = await _trailRepo.GetAllAsync(SD.TrailAPIPath, HttpContext.Session.GetString("JWToken"))
             };
 
@@ -63,7 +60,7 @@ namespace ParkyWeb.Controllers
         {
             User objUser = await _accRepo.LoginAsync($"{SD.AccoutAPIPath}authenticate/", obj);
 
-            if(objUser.Token == null)
+            if (objUser.Token == null)
             {
                 return View();
             }
@@ -95,7 +92,6 @@ namespace ParkyWeb.Controllers
             {
                 return View();
             }
-
 
             TempData["alert"] = "Registration Successful";
             return RedirectToAction(nameof(Login));

@@ -1,14 +1,13 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ParkyWeb.Models;
 using ParkyWeb.Models.ViewModel;
 using ParkyWeb.Repository.IRepository;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ParkyWeb.Controllers
 {
@@ -44,7 +43,7 @@ namespace ParkyWeb.Controllers
                 Trails = new Trails()
             };
 
-            if(id == null)
+            if (id == null)
             {
                 //this will be for create
                 return View(objVm);
@@ -52,7 +51,7 @@ namespace ParkyWeb.Controllers
 
             //for update
             objVm.Trails = await _trailRepo.GetAsync(SD.TrailAPIPath, id.GetValueOrDefault(), HttpContext.Session.GetString("JWToken"));
-            if(objVm.Trails == null)
+            if (objVm.Trails == null)
             {
                 return NotFound();
             }
@@ -66,7 +65,7 @@ namespace ParkyWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(obj.Trails.Id == 0)
+                if (obj.Trails.Id == 0)
                 {
                     await _trailRepo.CreateAsync(SD.TrailAPIPath, obj.Trails, HttpContext.Session.GetString("JWToken"));
                 }
@@ -113,4 +112,4 @@ namespace ParkyWeb.Controllers
             return Json(new { success = false, message = "Delete Not Successful" });
         }
     }
-}  
+}

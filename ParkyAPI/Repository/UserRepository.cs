@@ -4,12 +4,10 @@ using ParkyAPI.Data;
 using ParkyAPI.Models;
 using ParkyAPI.Repository.IRepository;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ParkyAPI.Repository
 {
@@ -29,7 +27,7 @@ namespace ParkyAPI.Repository
             var user = _db.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
 
             //user not found
-            if(user == null)
+            if (user == null)
             {
                 return null;
             }
@@ -61,7 +59,7 @@ namespace ParkyAPI.Repository
         {
             var user = _db.Users.SingleOrDefault(x => x.Username == username);
 
-            if(user == null)
+            if (user == null)
             {
                 return true;
             }
